@@ -1,0 +1,46 @@
+{
+  "welcomeFile": "app/bookshop/index.html",
+  "routes": [
+    {
+      "source": "^/app/(.*)$",
+      "target": "$1",
+      "localDir": "resources",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/appconfig/",
+      "localDir": "resources",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/admin/",
+      "destination": "bookstore-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/browse/",
+      "destination": "bookstore-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/user/",
+      "destination": "bookstore-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/odata/v4/sap.capire.orders.api.OrdersService/",
+      "destination": "orders-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/odata/v4/sap.capire.reviews.app.ReviewsService/",
+      "destination": "reviews-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/odata/v4/sap.capire.reviews.api.ReviewsService/",
+      "destination": "reviews-api",
+      "csrfProtection": true
+    }
+  ]
+}

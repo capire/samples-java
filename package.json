@@ -1,0 +1,24 @@
+{
+  "name": "@capire/samples-java",
+  "version": "3.0.0",
+  "description": "A monorepo with several samples for CAP using Java stack.",
+  "repository": "https://github.com/capire/samples-java",
+  "workspaces": [
+    "*"
+  ],
+  "devDependencies": {
+    "@cap-js/cds-test": "^0",
+    "@sap/cds-dk": "^9"
+  },
+  "scripts": {
+    "start": "cd bookshop && npm start",
+    "bookstore": "cd bookstore && npm start",
+    "orders": "cd orders && npm start",
+    "reviews": "cd reviews && npm start",
+    "build": "mbt build -t gen --mtar mta.tar",
+    "deploy": "cf deploy gen/mta.tar",
+    "undeploy": "cf undeploy capire.samples-java --delete-services --delete-service-keys"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true
+}

@@ -1,0 +1,190 @@
+_schema-version: 3.3.0
+ID: capire.samples-java
+version: 2.1.0
+description: "A monorepo with several samples for CAP using Java stack."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build shared-db --for hana --production
+modules:
+  - name: orders-srv
+    type: java
+    path: orders/srv
+    parameters:
+      instances: 1
+      buildpack: sap_java_buildpack_jakarta
+      disk-quota: 512M
+      memory: 1024M
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud,sandbox
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
+      JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 21.+ }'
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true --batch-mode
+      build-result: target/*-exec.jar
+    provides:
+      - name: orders-api
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: samples-messaging
+      - name: samples-db
+      - name: samples-auth
+
+  - name: reviews-srv
+    type: java
+    path: reviews/srv
+    parameters:
+      instances: 1
+      buildpack: sap_java_buildpack_jakarta
+      disk-quota: 512M
+      memory: 1024M
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud,sandbox
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
+      JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 21.+ }'
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true --batch-mode
+      build-result: target/*-exec.jar
+    provides:
+      - name: reviews-api
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: samples-messaging
+      - name: samples-db
+      - name: samples-auth
+
+  - name: bookstore-srv
+    type: java
+    path: bookstore/srv
+    parameters:
+      instances: 1
+      buildpack: sap_java_buildpack_jakarta
+      disk-quota: 512M
+      memory: 1024M
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud,sandbox
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
+      JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 21.+ }'
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true --batch-mode
+      build-result: target/*-exec.jar
+    provides:
+      - name: bookstore-api
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: samples-messaging
+      - name: samples-db
+      - name: samples-auth
+      - name: samples-destination
+
+  - name: samples-db-deployer
+    type: hdb
+    path: shared-db/gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: samples-db
+
+  - name: samples
+    type: approuter.nodejs
+    path: .deploy/app-router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: orders-api
+        group: destinations
+        properties:
+          name: orders-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: reviews-api
+        group: destinations
+        properties:
+          name: reviews-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: bookstore-api
+        group: destinations
+        properties:
+          name: bookstore-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: samples-auth
+
+  - name: destination-content
+    type: com.sap.application.content
+    requires:
+      - name: orders-api
+      - name: reviews-api
+      - name: bookstore-api
+      - name: samples-auth
+        parameters:
+          service-key:
+            name: xsuaa-service-key
+      - name: samples-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: orders-dest
+              URL: ~{orders-api/srv-url}
+              Authentication: OAuth2ClientCredentials
+              TokenServiceInstanceName: samples-auth
+              TokenServiceKeyName: xsuaa-service-key
+            - Name: reviews-dest
+              URL: ~{reviews-api/srv-url}
+              Authentication: OAuth2ClientCredentials
+              TokenServiceInstanceName: samples-auth
+              TokenServiceKeyName: xsuaa-service-key
+
+resources:
+  - name: samples-messaging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: enterprise-messaging
+      service-plan: default
+      path: .deploy/event-mesh.json
+      config:
+        emname: bookstore-${org}-${space}
+        namespace: cap/samples/${space}
+  - name: samples-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: samples-auth
+    type: org.cloudfoundry.managed-service
+    processed-after:
+      - samples-messaging
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: .deploy/xs-security.json
+      config:
+        xsappname: samples-${org}-${space}
+        tenant-mode: dedicated
+  - name: samples-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite

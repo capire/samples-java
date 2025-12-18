@@ -1,0 +1,19 @@
+cap.samples.java.messages.txt
+**/gen
+**/_out
+**/mta_archives
+**/node_modules
+**/package-lock.json
+
+**/.DS_Store
+**/*.sqlite
+**/*.db
+**/*.log
+**/*.mtar
+
+**/@types
+**/@cds-models
+
+# local nesting of projects
+/xflights
+/xtravels

@@ -1,0 +1,21 @@
+[submodule "shared-db"]
+	path = shared-db
+	url = https://github.com/capire/shared-db-java
+[submodule "bookshop"]
+	path = bookshop
+	url = https://github.com/capire/bookshop-java
+[submodule "bookstore"]
+	path = bookstore
+	url = https://github.com/capire/bookstore-java
+[submodule "orders"]
+	path = orders
+	url = https://github.com/capire/orders-java
+[submodule "reviews"]
+	path = reviews
+	url = https://github.com/capire/reviews-java
+[submodule "common"]
+	path = common
+	url = https://github.com/capire/common
+[submodule "data-viewer"]
+	path = data-viewer
+	url = https://github.com/capire/data-viewer
