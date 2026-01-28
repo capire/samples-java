@@ -78,7 +78,7 @@ modules:
     build-parameters:
       builder: custom
       commands:
-        - mvn clean package -DskipTests=true --batch-mode
+        - mvn clean package -DskipTests=true --batch-mode --activate-profiles production
       build-result: target/*-exec.jar
     provides:
       - name: bookstore-api
