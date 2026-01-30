@@ -28,7 +28,7 @@
       "csrfProtection": true
     },
     {
-      "source": "^/odata/v4/sap.capire.orders.api.OrdersService/",
+      "source": "^/odata/v4/OrdersService/",
       "destination": "orders-api",
       "csrfProtection": true
     },
