@@ -33,12 +33,7 @@
       "csrfProtection": true
     },
     {
-      "source": "^/odata/v4/sap.capire.reviews.app.ReviewsService/",
-      "destination": "reviews-api",
-      "csrfProtection": true
-    },
-    {
-      "source": "^/odata/v4/sap.capire.reviews.api.ReviewsService/",
+      "source": "^/odata/v4/ReviewsService/",
       "destination": "reviews-api",
       "csrfProtection": true
     }
