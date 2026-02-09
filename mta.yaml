@@ -1,7 +1,7 @@
 _schema-version: 3.3.0
 ID: capire.samples-java
-version: 2.1.0
-description: "A monorepo with several samples for CAP using Java stack."
+version: 3.0.0
+description: "A monorepo to work on several projects at once with CAP Java"
 parameters:
   enable-parallel-deployments: true
 build-parameters:
