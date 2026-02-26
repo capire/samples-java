@@ -22,11 +22,11 @@ After download and setup this starts the bookshop server you can open a browser 
 
 After the jumpstart, have a look into the enclosed sub folders/projects, which are:
 
-- [bookshop](bookshop) – a simple primer app
-- [reviews](reviews) - a generic reuse service
-- [orders](orders) - a generic reuse service
-- [common](common) - a reuse content package
-- [bookstore](bookstore) - a composite app of the above
+- [bookshop-java](https://github.com/capire/bookshop-java) – a simple primer app
+- [reviews-java](https://github.com/capire/reviews-java) - a generic reuse service
+- [orders-java](https://github.com/capire/orders-java) - a generic reuse service
+- [common](https://github.com/capire/common) - a reuse content package
+- [bookstore-java](https://github.com/capire/bookstore-java) - a composite app of the above
 
 ## Get Help
 
