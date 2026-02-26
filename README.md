@@ -16,7 +16,7 @@ npm install
 npm run start
 ```
 
-After download and setup this starts the bookshop server you can open a browser window and navigate to _http://localhost:8080/vue/index.html_ and login with user *alice* leaving the password field empty.
+After downloading and setting up the project, the bookshop server is started. Then open a browser and go to _http://localhost:8080/vue/index.html_. Log in with user *alice* and leave the password field blank.
 
 ## Grow as you go...
 
