@@ -1,4 +1,4 @@
-# Welcome to cap/samples
+# Welcome to cap/samples-java
 
 Find here a collection of samples for the [SAP Cloud Application Programming Model](https://cap.cloud.sap) organized in a simple [monorepo setup](about/samples.md#all-in-one-monorepo).
 
