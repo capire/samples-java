@@ -16,10 +16,10 @@
     },
     "queueRules": {
       "publishFilter": [
-        "*"
+        "${namespace}/*"
       ],
       "subscribeFilter": [
-        "*"
+        "${namespace}/*"
       ]
     }
   },
