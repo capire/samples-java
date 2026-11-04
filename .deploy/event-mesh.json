@@ -8,10 +8,10 @@
   "rules": {
     "topicRules": {
       "publishFilter": [
-        "*"
+        "${namespace}/*"
       ],
       "subscribeFilter": [
-        "*"
+        "${namespace}/*"
       ]
     },
     "queueRules": {
